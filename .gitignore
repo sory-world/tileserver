@@ -1,0 +1,5 @@
+.env
+.local
+
+data/input/*
+!data/input/.gitkeep
