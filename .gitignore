@@ -3,3 +3,7 @@
 
 data/input/*
 !data/input/.gitkeep
+
+data/config.json
+data/styles/*.json
+data/tiles/*
