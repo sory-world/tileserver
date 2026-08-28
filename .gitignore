@@ -1,9 +1,10 @@
 .env
 .local
 
-data/input/*
-!data/input/.gitkeep
+input/geojson/*
+!input/geojson/.gitkeep
 
-data/config.json
-data/styles/*.json
-data/tiles/*
+output/config.json
+output/styles/*.json
+output/tiles/*
+output/.work/

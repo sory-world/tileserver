@@ -1,3 +1,7 @@
+ifeq (,$(wildcard .env))
+$(error .env not found - create it with: cp .env.example .env)
+endif
+
 include .env
 export
 
@@ -8,7 +12,7 @@ GDAL_IMAGE ?= docker.io/osgeo/gdal:alpine-small-latest
 .PHONY: dirs tippecanoe-image config build serve clean shell
 
 dirs:
-	mkdir -p data/input data/tiles data/styles
+	mkdir -p input/geojson input/style-templates output/tiles output/styles
 
 tippecanoe-image:
 	podman build \
@@ -19,18 +23,22 @@ tippecanoe-image:
 config: dirs
 	bash ./scripts/render-config.sh
 
-build: dirs tippecanoe-image config
+build: dirs tippecanoe-image
 	bash ./scripts/build-mbtiles.sh
+	bash ./scripts/render-config.sh
 
 serve:
+	bash ./scripts/check-serve.sh
 	podman run --rm -it \
 	  --name tileserver-gl \
 	  -p "$(TILESERVER_PORT):8080" \
-	  -v "$$(pwd)/data:/data:Z" \
+	  -v "$$(pwd)/output:/data:Z" \
 	  -e TILESERVER_GL_ALLOWED_HOSTS="$(TILESERVER_ALLOWED_HOSTS)" \
 	  "$(TILESERVER_IMAGE)"
 
 clean:
-	rm -f data/tiles/*.mbtiles
-	rm -f data/config.json
-	rm -f data/styles/*.json
+	rm -f output/tiles/*.mbtiles
+	rm -f output/tiles/*.extent.json
+	rm -f output/config.json
+	rm -f output/styles/*.json
+	rm -rf output/.work

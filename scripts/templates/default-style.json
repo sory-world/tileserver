@@ -1,0 +1,53 @@
+{
+  "version": 8,
+  "name": "{{TILESET_NAME}}",
+  "center": [0, 0],
+  "zoom": 2,
+  "metadata": {
+    "description": "{{TILESET_DESCRIPTION}}",
+    "attribution": "{{TILESET_ATTRIBUTION}}"
+  },
+  "sources": {
+    "{{TILESET_ID}}": {
+      "type": "vector",
+      "url": "mbtiles://{{{TILESET_ID}}}"
+    }
+  },
+  "layers": [
+    {
+      "id": "{{LAYER_NAME}}-polygons",
+      "type": "fill",
+      "source": "{{TILESET_ID}}",
+      "source-layer": "{{LAYER_NAME}}",
+      "filter": ["==", ["geometry-type"], "Polygon"],
+      "paint": {
+        "fill-color": "#777777",
+        "fill-opacity": 1
+      }
+    },
+    {
+      "id": "{{LAYER_NAME}}-lines",
+      "type": "line",
+      "source": "{{TILESET_ID}}",
+      "source-layer": "{{LAYER_NAME}}",
+      "filter": ["==", ["geometry-type"], "LineString"],
+      "paint": {
+        "line-color": "#777777",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "{{LAYER_NAME}}-points",
+      "type": "circle",
+      "source": "{{TILESET_ID}}",
+      "source-layer": "{{LAYER_NAME}}",
+      "filter": ["==", ["geometry-type"], "Point"],
+      "paint": {
+        "circle-radius": 5,
+        "circle-color": "#777777",
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#ffffff"
+      }
+    }
+  ]
+}
